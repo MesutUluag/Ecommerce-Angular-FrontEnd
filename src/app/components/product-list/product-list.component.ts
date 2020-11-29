@@ -19,6 +19,7 @@ export class ProductListComponent implements OnInit {
   thePageNumber: number = 1;
   thePageSize: number = 5;
   theTotalElements: number = 0;
+  previousKeyword: string = null;
 
 
   constructor(private productService: ProductService,
@@ -78,11 +79,14 @@ export class ProductListComponent implements OnInit {
   // tslint:disable-next-line:typedef
   handleSearchProducts() {
     const theKeyword: string = this.route.snapshot.paramMap.get('keyword');
-    this.productService.searchProducts(theKeyword).subscribe(
-      data => {
-        this.products = data;
-      }
-    );
+
+    if (this.previousKeyword != theKeyword) {
+      this.thePageNumber = 1;
+    }
+    this.previousKeyword = theKeyword;
+
+    this.productService.searchProductListPaginate(this.thePageNumber - 1,
+      this.thePageSize, theKeyword).subscribe(this.processResult());
   }
 
   updatePageSize(pageSize: number) {
