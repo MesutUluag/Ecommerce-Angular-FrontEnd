@@ -61,9 +61,9 @@ export class ProductListComponent implements OnInit {
     console.log(`currentCategoryId=${this.currentCategoryId} ,
                 pageNumber=${this.thePageNumber}`);
 
-    this.productService.getProductListPaginate(this.thePageNumber - 1,
-      this.thePageSize,
-      this.currentCategoryId)
+    this.productService.getProductListPaginate2(this.thePageNumber - 1,
+      this.thePageSize
+      )
       .subscribe(this.processResult());
   }
 
