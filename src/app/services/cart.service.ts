@@ -15,12 +15,16 @@ export class CartService {
     let alreadyExistsInChart: boolean = false;
     let existingCartItem: CartItem = undefined;
     if (this.cartItems.length > 0) {
-      for (let tempCartItem of this.cartItems) {
-        if (tempCartItem.id === theCartItem.id) {
-          existingCartItem = tempCartItem;
-          break;
-        }
-      }
+
+      existingCartItem = this.cartItems.find(tempCartItem => tempCartItem.id === theCartItem.id);
+
+      // refactored below shown code to upper shown code
+      // for (let tempCartItem of this.cartItems) {
+      //   if (tempCartItem.id === theCartItem.id) {
+      //     existingCartItem = tempCartItem;
+      //     break;
+      //   }
+      // }
     }
     alreadyExistsInChart = (existingCartItem != undefined);
     if (alreadyExistsInChart) {
