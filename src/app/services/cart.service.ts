@@ -38,7 +38,7 @@ export class CartService {
   constructor() {
   }
 
-  private computeTotals() {
+  computeTotals() {
     let totalPriceValue: number = 0;
     let totalQuantityValue: number = 0;
 
