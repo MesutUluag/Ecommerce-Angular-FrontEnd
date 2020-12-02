@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {CheckoutServiceService} from '../../services/checkout-service.service';
+import {Country} from '../../common/country';
+import {State} from '../../common/state';
 
 @Component({
   selector: 'app-checkout',
@@ -13,6 +15,9 @@ export class CheckoutComponent implements OnInit {
   totalQuantity: number = 0;
   creditCardMonths: number[] = [];
   creditCardYears: number[] = [];
+  countries: Country[] = [];
+  shippingAddressStates: State[] = [];
+  billingAddressStates: State[] = [];
 
   constructor(private formBuilder: FormBuilder,
               private checkoutService: CheckoutServiceService) {
@@ -61,6 +66,12 @@ export class CheckoutComponent implements OnInit {
         this.creditCardYears = data;
       }
     );
+
+    // populate countries
+    this.checkoutService.getCountries().subscribe(data => {
+      this.countries = data;
+    });
+
   }
 
   onSubmit() {
@@ -72,8 +83,10 @@ export class CheckoutComponent implements OnInit {
     if (event.target.checked) {
       this.checkoutFormGroup.controls.billingAddress
         .setValue(this.checkoutFormGroup.controls.shippingAddress.value);
+      this.billingAddressStates = this.shippingAddressStates;
     } else {
       this.checkoutFormGroup.controls.billingAddress.reset();
+      this.billingAddressStates = [];
     }
 
   }
@@ -92,6 +105,23 @@ export class CheckoutComponent implements OnInit {
     this.checkoutService.getCreditCardMonths(startMonth).subscribe(
       data => {
         this.creditCardMonths = data;
+      }
+    );
+  }
+
+  getStates(formGroupName: string) {
+    const formGroup = this.checkoutFormGroup.get(formGroupName);
+    const countryCode = formGroup.value.country.code;
+
+    this.checkoutService.getStates(countryCode).subscribe(
+      data => {
+        if (formGroupName === 'shippingAddress') {
+          this.shippingAddressStates = data;
+        } else {
+          this.billingAddressStates = data;
+        }
+        // initially select first item
+        formGroup.get('state').setValue(data[0]);
       }
     );
   }
