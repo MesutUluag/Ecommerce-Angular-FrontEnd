@@ -4,6 +4,7 @@ import {CheckoutServiceService} from '../../services/checkout-service.service';
 import {Country} from '../../common/country';
 import {State} from '../../common/state';
 import {CheckoutValidators} from '../../validators/checkout-validators';
+import {CartService} from '../../services/cart.service';
 
 @Component({
   selector: 'app-checkout',
@@ -21,7 +22,8 @@ export class CheckoutComponent implements OnInit {
   billingAddressStates: State[] = [];
 
   constructor(private formBuilder: FormBuilder,
-              private checkoutService: CheckoutServiceService) {
+              private checkoutService: CheckoutServiceService,
+              private cartService: CartService) {
   }
 
   ngOnInit(): void {
@@ -29,6 +31,7 @@ export class CheckoutComponent implements OnInit {
       customer: this.formBuilder.group({
         firstName: new FormControl('', [Validators.required, Validators.minLength(2), CheckoutValidators.notOnlyWhitespace]),
         lastName: new FormControl('', [Validators.required, Validators.minLength(2), CheckoutValidators.notOnlyWhitespace]),
+        // tslint:disable-next-line:max-line-length
         email: new FormControl('', [Validators.required, Validators.pattern('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$'), CheckoutValidators.notOnlyWhitespace])
       }),
       shippingAddress: this.formBuilder.group({
@@ -73,19 +76,29 @@ export class CheckoutComponent implements OnInit {
       this.countries = data;
     });
 
+    this.reviewCartDetails();
   }
 
   onSubmit() {
     console.log('Handling Submit Button');
     console.log(this.checkoutFormGroup.get('customer').value);
-    if (this.checkoutFormGroup.invalid){
+    if (this.checkoutFormGroup.invalid) {
       this.checkoutFormGroup.markAllAsTouched();
     }
   }
 
-  get firstName(){ return this.checkoutFormGroup.get('customer.firstName'); }
-  get lastName(){ return this.checkoutFormGroup.get('customer.lastName'); }
-  get email(){ return this.checkoutFormGroup.get('customer.email'); }
+  // getter methods for form validation
+  get firstName() {
+    return this.checkoutFormGroup.get('customer.firstName');
+  }
+
+  get lastName() {
+    return this.checkoutFormGroup.get('customer.lastName');
+  }
+
+  get email() {
+    return this.checkoutFormGroup.get('customer.email');
+  }
 
   copyShippingAddressToBillingAddress(event) {
     if (event.target.checked) {
@@ -132,5 +145,14 @@ export class CheckoutComponent implements OnInit {
         formGroup.get('state').setValue(data[0]);
       }
     );
+  }
+
+  reviewCartDetails() {
+    this.cartService.totalPrice.subscribe(data => {
+      this.totalPrice = data;
+    });
+    this.cartService.totalQuantity.subscribe(data => {
+      this.totalQuantity = data;
+    });
   }
 }
