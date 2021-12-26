@@ -9,8 +9,8 @@ import {State} from '../common/state';
   providedIn: 'root'
 })
 export class CheckoutServiceService {
-  private countriesUrl = 'http://localhost:8081/api/countries';
-  private statesUrl = 'http://localhost:8081/api/states';
+  private countriesUrl = 'http://localhost:8080/api/countries';
+  private statesUrl = 'http://localhost:8080/api/states';
 
   constructor(private httpClient: HttpClient) {
   }
