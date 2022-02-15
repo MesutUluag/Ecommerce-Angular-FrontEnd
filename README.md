@@ -1,6 +1,9 @@
 # AngularEcommerce
-
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.18.
+Features:
+* Adding products to charts, products comes from backend-side and editable at database
+* Checkout page with shipping, billing address forms
+* Saves orders using rest api's at backend-side
+* Login functionality using Octa authentication servers 
 
 ## Development server
 
