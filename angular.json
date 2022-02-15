@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Ecommerce-Angular-FrontEnd": {
+    "angular-ecommerce": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/Ecommerce-Angular-FrontEnd",
+            "outputPath": "dist/angular-ecommerce",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -26,7 +26,8 @@
             "styles": [
               "src/styles.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "node_modules/@okta/okta-signin-widget/dist/css/okta-sign-in.min.css"
             ],
             "scripts": []
           },
@@ -41,6 +42,7 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
+              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -63,18 +65,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "Ecommerce-Angular-FrontEnd:build"
+            "browserTarget": "angular-ecommerce:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "Ecommerce-Angular-FrontEnd:build:production"
+              "browserTarget": "angular-ecommerce:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Ecommerce-Angular-FrontEnd:build"
+            "browserTarget": "angular-ecommerce:build"
           }
         },
         "test": {
@@ -111,19 +113,15 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "Ecommerce-Angular-FrontEnd:serve"
+            "devServerTarget": "angular-ecommerce:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "Ecommerce-Angular-FrontEnd:serve:production"
+              "devServerTarget": "angular-ecommerce:serve:production"
             }
           }
         }
       }
-    }
-  },
-  "defaultProject": "Ecommerce-Angular-FrontEnd",
-  "cli": {
-    "analytics": "b2d94455-ec7e-46b9-a07b-6dbb1d442c5f"
-  }
+    }},
+  "defaultProject": "angular-ecommerce"
 }
