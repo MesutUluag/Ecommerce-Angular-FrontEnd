@@ -4,6 +4,7 @@ Features:
 * Checkout page with shipping, billing address forms
 * Saves orders using rest api's at backend-side
 * Login functionality using Octa authentication servers 
+* Reaching /orders endpoint using auth tokens from octa
 
 ## Development server
 
