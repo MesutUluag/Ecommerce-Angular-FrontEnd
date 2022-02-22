@@ -39,6 +39,8 @@ export class CheckoutComponent implements OnInit {
   cardElement: any;
   displayError: any;
 
+  isDisabled: boolean = false;
+
   constructor(private formBuilder: FormBuilder,
               private shopFormService: ShopFormService,
               private cartService: CartService,
@@ -240,8 +242,10 @@ export class CheckoutComponent implements OnInit {
     // compute total amount
     this.paymentInfo.amount = Math.round(this.totalPrice * 100);
     this.paymentInfo.currency = 'USD';
+    this.paymentInfo.receiptEmail = purchase.customer.email;
 
     if (!this.checkoutFormGroup.invalid && this.displayError.textContent === '') {
+      this.isDisabled = true;
       this.checkoutService.createPaymentIntent(this.paymentInfo).subscribe((paymentIntentResponse) => {
         // send the payment
         this.stripe.confirmCardPayment(paymentIntentResponse.client_secret,
@@ -263,15 +267,18 @@ export class CheckoutComponent implements OnInit {
           },
           {handleActions: false}).then((result) => {
           if (result.error) {
+            this.isDisabled = false;
             alert('There was an error:' + result.error.message);
           } else {
             this.checkoutService.placeOrder(purchase).subscribe({
               next: response => {
                 alert('Order has been received. \nOrder Tracking number: ' + response.orderTrackingNumber);
                 this.resetCart();
+                this.isDisabled = false;
               },
               error: err => {
                 alert('There is an error: ' + err.message);
+                this.isDisabled = false;
               }
             });
           }
